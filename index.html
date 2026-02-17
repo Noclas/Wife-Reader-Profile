@@ -1359,6 +1359,9 @@ async function getAIRecommendations(event) {
     const existingRecs = profile.manual_recommendations.map(r => `- "${r.title}" by ${r.author}`).join('\n');
 
     const prompt = `Based on this reader profile, please recommend 7 new books that haven't been read or recommended yet. The recommendation must contain 3 romance books, 3 fantasy books and 1 romantic fantasy. Do not recommend books that have been already read. Do not recommend books that have disliked tropes. Do not recommend books from any of the disliked series.
+    CRITICAL RULE: DO NOT recommend any book that the user has already read, REGARDLESS of the language.
+    Note that the "ALREADY READ" list contains titles in both English and Spanish.
+    Check for international titles and translations before suggesting.
 
 LIKED TROPES: ${profile.liked_tropes.join(', ')}
 DISLIKED TROPES: ${profile.disliked_tropes.join(', ')}
