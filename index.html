@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
     <!-- PWA meta tags -->  
     <meta name="theme-color" content="#5b3cc4" />  
@@ -28,6 +28,7 @@
             --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
             --success-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
             --ai-gradient: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            --card-padding: 20px;
         }
 
         * {
@@ -156,6 +157,14 @@
         .btn-primary:hover {
             transform: translateY(-3px);
             box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+        }
+
+        /* --- Botones más fáciles de tocar en móvil (Touch Targets) --- */  
+        button, .nav-link, .btn {  
+            min-height: 44px; /* Tamaño mínimo recomendado por Apple */  
+            display: flex;  
+            align-items: center;  
+            justify-content: center;  
         }
 
         .save-indicator {
@@ -562,6 +571,105 @@
         .logout-btn:hover {
             background: rgba(255, 107, 107, 0.3);
             border-color: #ff6b6b;
+        }
+
+        /* En pantallas pequeñas (iPhone) reducimos el padding y ajustamos fuentes */  
+        @media (max-width: 768px) {  
+            :root {  
+                --card-padding: 15px;  
+            }  
+            
+            body {  
+                padding: 10px;  
+            }  
+        
+            .header h1 {  
+                font-size: 1.8rem !important;  
+            }  
+        
+            /* Ajuste de las estadísticas (Dashboard) */  
+            .stats-grid {  
+                grid-template-columns: 1fr 1fr !important; /* 2 columnas en móvil */  
+                gap: 10px !important;  
+            }  
+        
+            .stat-card {  
+                padding: 15px !important;  
+            }  
+        
+            /* Ajuste de las pestañas (Tabs) */  
+            .nav-tabs .nav-link {  
+                padding: 10px 8px !important;  
+                font-size: 13px !important;  
+            }  
+        
+            /* Ajuste de las tarjetas de libros */  
+            .book-card {  
+                margin-bottom: 15px !important;  
+            }  
+        
+            /* El formulario de Login en móvil */  
+            .login-container {  
+                padding: 25px !important;  
+                width: 85% !important;  
+            }  
+        }  
+        
+        /* --- Mejoras de Layout para iPad y Desktop --- */  
+        @media (min-width: 769px) {  
+            .container {  
+                max-width: 1000px !important;  
+                margin: 0 auto;  
+            }  
+        
+            .stats-grid {  
+                grid-template-columns: repeat(4, 1fr) !important; /* 4 columnas en iPad/PC */  
+            }  
+        }  
+        
+        /* --- Fix para que las imágenes y inputs no se desborden --- */  
+        img, video, canvas {  
+            max-width: 100%;  
+            height: auto;  
+        }  
+        
+        input, select, textarea {  
+            font-size: 16px !important; /* Evita que iOS haga zoom al enfocar un input */  
+        }  
+        
+        /* --- Ajuste de la Tabla de Import/Export para móvil --- */  
+        .import-export-container {  
+            display: flex;  
+            flex-direction: column; /* Por defecto en columna para móvil */  
+            gap: 20px;  
+        }  
+        
+        @media (min-width: 992px) {  
+            .import-export-container {  
+                flex-direction: row; /* En fila para pantallas grandes */  
+            }  
+            .import-export-col {  
+                flex: 1;  
+            }  
+        }
+
+        /* Evitar selección de texto accidental en botones */  
+        button, .nav-link {  
+            -webkit-user-select: none;  
+            user-select: none;  
+        }  
+        
+        /* Scroll suave */  
+        html {  
+            scroll-behavior: smooth;  
+        }  
+        
+        /* Estilo para el área segura del iPhone (Notch) */  
+        body {  
+            padding-top: env(safe-area-inset-top);  
+            padding-bottom: env(safe-area-inset-bottom);  
+            padding-left: env(safe-area-inset-left);  
+            padding-right: env(safe-area-inset-right);  
         }
     </style>
 </head>
