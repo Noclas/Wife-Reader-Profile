@@ -723,7 +723,7 @@
                 <i class="fas fa-cog"></i> Configure API Key
             </button>
             <span class="ms-3" id="apiStatus">
-                <i class="fas fa-circle text-warning"></i> Not configured
+                <i class="fas fa-circle text-warning" style="text-align: left;"></i> Not configured
             </span>
         </div>
 
@@ -1122,9 +1122,9 @@
         function updateAPIStatus() {
             const statusElement = document.getElementById('apiStatus');
             if (apiConfig.apiKey) {
-                statusElement.innerHTML = '<i class="fas fa-circle text-success"></i> Configured';
+                statusElement.innerHTML = '<i class="fas fa-circle text-success" style="text-align:left;"></i> Configured';
             } else {
-                statusElement.innerHTML = '<i class="fas fa-circle text-warning"></i> Not configured';
+                statusElement.innerHTML = '<i class="fas fa-circle text-warning style="text-align:left;"></i> Not configured';
             }
         }
 
