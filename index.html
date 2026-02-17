@@ -1,0 +1,1670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- PWA meta tags -->  
+    <meta name="theme-color" content="#5b3cc4" />  
+    <meta name="apple-mobile-web-app-capable" content="yes" />  
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />  
+    <meta name="apple-mobile-web-app-title" content="Wife Books" />
+
+    <!-- Icono de app (ajusta la ruta si usas otro) -->  
+    <link rel="apple-touch-icon" href="icons/icon_banner.png" />  
+    <link rel="icon" type="image/png" sizes="192x192" href="icons/icon_banner.png" />  
+    <link rel="icon" type="image/png" sizes="512x512" href="icons/icon_banner.png" />
+
+    <!-- Manifest PWA -->  
+    <link rel="manifest" href="manifest.json" />
+
+    <title>Wife's Book Profile Manager</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --success-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --ai-gradient: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 25px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 1400px;
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            font-weight: 300;
+        }
+
+        .nav-tabs {
+            border: none;
+            margin-bottom: 30px;
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 15px;
+        }
+
+        .nav-tabs .nav-link {
+            color: #667eea;
+            font-weight: 500;
+            border: none;
+            border-radius: 10px;
+            margin: 0 5px;
+            transition: all 0.3s ease;
+            padding: 12px 20px;
+        }
+
+        .nav-tabs .nav-link:hover {
+            background: rgba(102, 126, 234, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .nav-tabs .nav-link.active {
+            background: var(--primary-gradient);
+            color: white;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .book-card {
+            border-left: 5px solid transparent;
+            border-image: var(--primary-gradient) 1;
+            margin-bottom: 20px;
+            padding: 20px;
+            background: linear-gradient(145deg, #ffff, #f8f9fa);
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+
+        .book-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+        }
+
+        .book-card h5 {
+            font-family: 'Playfair Display', serif;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .rating {
+            color: #ffc107;
+            font-size: 1.2rem;
+            text-shadow: 0 2px 4px rgba(255, 193, 7, 0.3);
+        }
+
+        .badge-custom {
+            background: var(--primary-gradient);
+            color: white;
+            margin: 5px;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 500;
+            box-shadow: 0 3px 10px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .badge-custom:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.5);
+        }
+
+        .btn-primary {
+            background: var(--primary-gradient);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+        }
+
+        .save-indicator {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 50px;
+            display: none;
+            z-index: 9999;
+            box-shadow: 0 8px 25px rgba(17, 153, 142, 0.4);
+            font-weight: 600;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .tag-item {
+            display: inline-flex;
+            align-items: center;
+            background: linear-gradient(145deg, #e9ecef, #f8f9fa);
+            padding: 8px 15px;
+            margin: 5px;
+            border-radius: 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .tag-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+        }
+
+        .tag-item button {
+            background: none;
+            border: none;
+            color: #dc3545;
+            margin-left: 10px;
+            cursor: pointer;
+            padding: 0;
+            transition: all 0.3s ease;
+        }
+
+        .tag-item button:hover {
+            transform: scale(1.2);
+        }
+
+        .recommendation-card {
+            border: 3px solid transparent;
+            background: linear-gradient(white, white) padding-box,
+                    var(--primary-gradient) border-box;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .recommendation-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.25);
+        }
+
+        .recommendation-card h4 {
+            font-family: 'Playfair Display', serif;
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+        }
+
+        .link-buttons a {
+            margin-right: 10px;
+            margin-bottom: 10px;
+            border-radius: 20px;
+            padding: 10px 20px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .link-buttons a:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .modal-header {
+            background: var(--primary-gradient);
+            color: white;
+            border-radius: 15px 15px 0 0;
+            padding: 25px;
+        }
+
+        .modal-content {
+            border-radius: 20px;
+            border: none;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .modal-body {
+            padding: 30px;
+        }
+
+        .ai-button {
+            background: var(--ai-gradient);
+            border: none;
+            font-size: 1.2rem;
+            padding: 18px 40px;
+            margin-bottom: 25px;
+            border-radius: 50px;
+            font-weight: 700;
+            color: white;
+            box-shadow: 0 10px 30px rgba(250, 112, 154, 0.4);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ai-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(250, 112, 154, 0.6);
+        }
+
+        .ai-button:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .ai-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,255,255,0.3);
+            transition: left 0.5s ease;
+        }
+
+        .ai-button:hover::before {
+            left: 100%;
+        }
+
+        .spinner-border-sm {
+            width: 1.2rem;
+            height: 1.2rem;
+        }
+
+        .form-control, .form-select {
+            border-radius: 15px;
+            border: 2px solid #e9ecef;
+            padding: 12px 20px;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+
+        .accordion-button {
+            background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+            border-radius: 15px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .accordion-button:not(.collapsed) {
+            background: var(--primary-gradient);
+            color: white;
+        }
+
+        .accordion-item {
+            border: none;
+            margin-bottom: 15px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+
+        .input-group .btn {
+            border-radius: 0 15px 15px 0;
+        }
+
+        .api-config-banner {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 20px rgba(240, 147, 251, 0.3);
+        }
+
+        .api-config-banner i {
+            font-size: 1.5rem;
+            margin-right: 10px;
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+        }
+
+        .loading-content {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .search-box {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #667eea;
+        }
+
+        .search-box input {
+            padding-left: 50px;
+        }
+
+        .stats-card {
+            background: var(--primary-gradient);
+            color: white;
+            padding: 25px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+            margin-bottom: 20px;
+        }
+
+        .stats-card h3 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .stats-card p {
+            margin: 0;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="save-indicator" id="saveIndicator">
+        <i class="fas fa-check-circle"></i> Saved!
+    </div>
+
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <h4>🤖 AI is thinking...</h4>
+            <p>Generating personalized recommendations</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="text-center">
+            <h1>
+                <i class="fas fa-book-heart"></i> Wife's Book Profile Manager
+            </h1>
+            <p class="subtitle">Your personalized reading companion powered by AI</p>
+        </div>
+
+        <!-- API Configuration Banner -->
+        <div class="api-config-banner">
+            <i class="fas fa-key"></i>
+            <strong>API Configuration:</strong> 
+            <button class="btn btn-light btn-sm ms-3" data-bs-toggle="modal" data-bs-target="#apiConfigModal">
+                <i class="fas fa-cog"></i> Configure API Key
+            </button>
+            <span class="ms-3" id="apiStatus">
+                <i class="fas fa-circle text-warning"></i> Not configured
+            </span>
+        </div>
+
+        <ul class="nav nav-tabs mb-4" id="mainTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button">
+                    <i class="fas fa-user"></i> Profile Overview
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="books-tab" data-bs-toggle="tab" data-bs-target="#books" type="button">
+                    <i class="fas fa-book"></i> Reading History
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="recommendations-tab" data-bs-toggle="tab" data-bs-target="#recommendations" type="button">
+                    <i class="fas fa-star"></i> Recommendations
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="update-tab" data-bs-toggle="tab" data-bs-target="#update" type="button">
+                    <i class="fas fa-edit"></i> Easy Update
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="json-tab" data-bs-toggle="tab" data-bs-target="#json" type="button">
+                    <i class="fas fa-code"></i> Import/Export
+                </button>
+            </li>
+        </ul>
+
+        <div class="tab-content" id="mainTabContent">
+            <!-- Profile Overview Tab -->
+            <div class="tab-pane fade show active" id="profile" role="tabpanel">
+                <div class="row mb-4">
+                    <div class="col-md-4">
+                    <div class="stats-card">
+                    <h3 id="totalBooks"><i class="fas fa-book-open"></i> 0</h3>
+                    <p>Books Read</p>
+                    </div>
+                    </div>
+                    <div class="col-md-4">
+                    <div class="stats-card" style="background: var(--secondary-gradient);">
+                    <h3 id="avgRating"><i class="fas fa-star"></i> 0</h3>
+                    <p>Average Rating</p>
+                    </div>
+                    </div>
+                    <div class="col-md-4">
+                    <div class="stats-card" style="background: linear-gradient(135deg, #4caf50 0%, #81c784 100%);">
+                    <h3 id="totalRecs"><i class="fas fa-lightbulb"></i> 0</h3>
+                    <p>Recommendations</p>
+                    </div>
+                    </div>
+                </div>
+                <h3><i class="fas fa-heart"></i> Reading Preferences</h3>
+                <div id="profileDisplay"></div>
+            </div>
+
+            <!-- Already Read Books Tab -->
+            <div class="tab-pane fade" id="books" role="tabpanel">
+                <h3><i class="fas fa-book-open"></i> Reading History</h3>
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" class="form-control" id="bookSearch" placeholder="Search books by title or author...">
+                </div>
+                <div id="booksDisplay"></div>
+            </div>
+
+            <!-- Recommendations Tab -->
+            <div class="tab-pane fade" id="recommendations" role="tabpanel">
+                <h3><i class="fas fa-magic"></i> Book Recommendations</h3>
+
+                <button class="btn btn-success ai-button" onclick="getAIRecommendations(event)">
+                    <i class="fas fa-robot"></i> Get New AI Recommendations
+                </button>
+
+                <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addRecommendationModal">
+                    <i class="fas fa-plus"></i> Add Manual Recommendation
+                </button>
+
+                <div id="recommendationsDisplay"></div>
+            </div>
+
+            <!-- Easy Update Tab -->
+            <div class="tab-pane fade" id="update" role="tabpanel">
+                <h3><i class="fas fa-tools"></i> Update Profile</h3>
+
+                <div class="accordion" id="updateAccordion">
+                    <!-- Liked Tropes -->
+                    <div class="accordion-item">
+                    <h2 class="accordion-header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#likedTropes">
+                    <i class="fas fa-heart"></i>   Liked Tropes
+                    </button>
+                    </h2>
+                    <div id="likedTropes" class="accordion-collapse collapse show" data-bs-parent="#updateAccordion">
+                    <div class="accordion-body">
+                    <div id="likedTropesList" class="mb-3"></div>
+                    <div class="input-group">
+                    <input type="text" class="form-control" id="newLikedTrope" placeholder="Add new liked trope...">
+                    <button class="btn btn-primary" onclick="addLikedTrope()">
+                    <i class="fas fa-plus"></i> Add
+                    </button>
+                    </div>
+                    </div>
+                    </div>
+                    </div>
+
+                    <!-- Disliked Tropes -->
+                    <div class="accordion-item">
+                    <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#dislikedTropes">
+                    <i class="fas fa-times-circle"></i>   Disliked Tropes
+                    </button>
+                    </h2>
+                    <div id="dislikedTropes" class="accordion-collapse collapse" data-bs-parent="#updateAccordion">
+                    <div class="accordion-body">
+                    <div id="dislikedTropesList" class="mb-3"></div>
+                    <div class="input-group">
+                    <input type="text" class="form-control" id="newDislikedTrope" placeholder="Add new disliked trope...">
+                    <button class="btn btn-primary" onclick="addDislikedTrope()">
+                    <i class="fas fa-plus"></i> Add
+                    </button>
+                    </div>
+                    </div>
+                    </div>
+                    </div>
+
+                    <!-- Author Affinities -->
+                    <div class="accordion-item">
+                    <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#authors">
+                    <i class="fas fa-user-edit"></i>   Author Affinities
+                    </button>
+                    </h2>
+                    <div id="authors" class="accordion-collapse collapse" data-bs-parent="#updateAccordion">
+                    <div class="accordion-body">
+                    <h5>Auto-Safe Authors</h5>
+                    <div id="autoSafeAuthorsList" class="mb-3"></div>
+                    <div class="input-group mb-3">
+                    <input type="text" class="form-control" id="newAutoSafeAuthor" placeholder="Add auto-safe author...">
+                    <button class="btn btn-primary" onclick="addAutoSafeAuthor()">
+                    <i class="fas fa-plus"></i> Add
+                    </button>
+                    </div>
+
+                    <h5>Loved Authors</h5>
+                    <div id="lovedAuthorsList" class="mb-3"></div>
+                    <div class="input-group">
+                    <input type="text" class="form-control" id="newLovedAuthor" placeholder="Add loved author...">
+                    <button class="btn btn-primary" onclick="addLovedAuthor()">
+                    <i class="fas fa-plus"></i> Add
+                    </button>
+                    </div>
+                    </div>
+                    </div>
+                    </div>
+
+                    <!-- Disliked Series -->
+                    <div class="accordion-item">
+                    <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#dislikedSeries">
+                    <i class="fas fa-ban"></i>   Disliked Series
+                    </button>
+                    </h2>
+                    <div id="dislikedSeries" class="accordion-collapse collapse" data-bs-parent="#updateAccordion">
+                    <div class="accordion-body">
+                    <div id="dislikedSeriesList" class="mb-3"></div>
+                    <div class="input-group">
+                    <input type="text" class="form-control" id="newDislikedSeries" placeholder="Add disliked series...">
+                    <button class="btn btn-primary" onclick="addDislikedSeries()">
+                    <i class="fas fa-plus"></i> Add
+                    </button>
+                    </div>
+                    </div>
+                    </div>
+                    </div>
+
+                    <!-- Add New Book -->
+                    <div class="accordion-item">
+                    <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#addBook">
+                    <i class="fas fa-book-medical"></i>   Add New Read Book
+                    </button>
+                    </h2>
+                    <div id="addBook" class="accordion-collapse collapse" data-bs-parent="#updateAccordion">
+                    <div class="accordion-body">
+                    <div class="mb-3">
+                    <label class="form-label">Book Title</label>
+                    <input type="text" class="form-control" id="newBookTitle">
+                    </div>
+                    <div class="mb-3">
+                    <label class="form-label">Author</label>
+                    <input type="text" class="form-control" id="newBookAuthor">
+                    </div>
+                    <div class="mb-3">
+                    <label class="form-label">Rating (1-5 stars)</label>
+                    <select class="form-select" id="newBookRating">
+                    <option value="5">5 Stars ⭐⭐⭐⭐</option>
+                    <option value="4">4 Stars ⭐⭐⭐⭐</option>
+                    <option value="3">3 Stars ⭐⭐⭐</option>
+                    <option value="2">2 Stars ⭐⭐</option>
+                    <option value="1">1 Star ⭐</option>
+                    </select>
+                    </div>
+                    <button class="btn btn-primary" onclick="addNewBook()">
+                    <i class="fas fa-plus"></i> Add Book
+                    </button>
+                    </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Import/Export Tab -->
+            <div class="tab-pane fade" id="json" role="tabpanel">
+                <h3><i class="fas fa-file-code"></i> JSON Import/Export</h3>
+                <p class="text-muted">Use this for backup and restore purposes.</p>
+
+                <div class="mb-3">
+                    <label class="form-label"><strong>Import JSON Profile</strong></label>
+                    <textarea class="form-control" id="jsonImport" rows="10" placeholder="Paste your JSON profile here..."></textarea>
+                    <button class="btn btn-primary mt-2" onclick="importJSON()">
+                    <i class="fas fa-upload"></i> Import Profile
+                    </button>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label"><strong>Export JSON Profile</strong></label>
+                    <textarea class="form-control" id="jsonExport" rows="10" readonly></textarea>
+                    <button class="btn btn-primary mt-2" onclick="exportJSON()">
+                    <i class="fas fa-download"></i> Generate Export
+                    </button>
+                    <button class="btn btn-secondary mt-2" onclick="copyJSON()">
+                    <i class="fas fa-copy"></i> Copy to Clipboard
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- API Configuration Modal -->
+    <div class="modal fade" id="apiConfigModal" tabindex="-1" aria-labelledby="apiConfigModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="apiConfigModalLabel">
+                    <i class="fas fa-key"></i> Configure ChatLLM API
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i> 
+                    <strong>How to get your API key:</strong><br>
+                    1. Go to <a href="https://abacus.ai/app/route-llm-apis" target="_blank">RouteLLM APIs</a><br>
+                    2. Generate your API key<br>
+                    3. Paste it below
+                    </div>
+                    <div class="mb-3">
+                    <label class="form-label">API Key</label>
+                    <input type="password" class="form-control" id="apiKeyInput" placeholder="Enter your ChatLLM API key">
+                    </div>
+                    <div class="mb-3">
+                    <label class="form-label">API Endpoint (Optional)</label>
+                    <input type="text" class="form-control" id="apiEndpointInput" value="https://routellm.abacus.ai/v1/chat/completions" placeholder="API endpoint URL">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="saveAPIConfig()">
+                    <i class="fas fa-save"></i> Save Configuration
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Recommendation Modal -->
+    <div class="modal fade" id="addRecommendationModal" tabindex="-1" aria-labelledby="addRecommendationModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addRecommendationModalLabel">
+                    <i class="fas fa-plus-circle"></i> Add Manual Recommendation
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                    <label class="form-label">Book Title *</label>
+                    <input type="text" class="form-control" id="recTitle" required>
+                    </div>
+                    <div class="mb-3">
+                    <label class="form-label">Author *</label>
+                    <input type="text" class="form-control" id="recAuthor" required>
+                    </div>
+                    <div class="mb-3">
+                    <label class="form-label">Genre/Category</label>
+                    <input type="text" class="form-control" id="recGenre" placeholder="e.g., Fantasy Romance, Contemporary">
+                    </div>
+                    <div class="mb-3">
+                    <label class="form-label">Tropes (comma-separated)</label>
+                    <input type="text" class="form-control" id="recTropes" placeholder="e.g., enemies-to-lovers, slow burn">
+                    </div>
+                    <div class="mb-3">
+                    <label class="form-label">Why It Fits</label>
+                    <textarea class="form-control" id="recWhy" rows="3" placeholder="Explain why this book matches the profile..."></textarea>
+                    </div>
+                    <hr>
+                    <h6 class="text-muted">Optional Links</h6>
+                    <div class="mb-3">
+                    <label class="form-label">Goodreads URL <span class="text-muted">(optional)</span></label>
+                    <input type="url" class="form-control" id="recGoodreads" placeholder="https://www.goodreads.com/book/show/...">
+                    </div>
+                    <div class="mb-3">
+                    <label class="form-label">Amazon URL <span class="text-muted">(optional)</span></label>
+                    <input type="url" class="form-control" id="recAmazon" placeholder="https://www.amazon.com/...">
+                    </div>
+                    <div class="mb-3">
+                    <label class="form-label">Buscalibre URL <span class="text-muted">(optional)</span></label>
+                    <input type="url" class="form-control" id="recBuscalibre" placeholder="https://www.buscalibre.com/...">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="addManualRecommendation()">
+                    <i class="fas fa-save"></i> Save Recommendation
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Initial Profile Data
+        let profile = {
+            "liked_tropes": [
+                "enemies-to-lovers",
+                "forced proximity",
+                "slow burn",
+                "grumpy/sunshine",
+                "protector dynamics",
+                "banter-heavy dialogue",
+                "morally gray characters",
+                "found family",
+                "chosen one narratives",
+                "political intrigue",
+                "magic systems with cost/consequence",
+                "redemption arcs",
+                "mutual pining",
+                "touch her and die",
+                "competent heroines",
+                "emotional vulnerability in stoic characters"
+            ],
+            "disliked_tropes": [
+                "miscommunication as primary conflict driver",
+                "love triangles",
+                "cheating (even if justified narratively)",
+                "instalove without buildup",
+                "overly passive protagonists",
+                "deus ex machina resolutions"
+            ],
+            "narrative_preferences": {
+                "pov": "Strongly prefers dual POV or multi-POV",
+                "tense": "No strong preference",
+                "world_building": "Loves rich, immersive worlds but will tolerate lighter world-building if character work is strong",
+                "prose_style": "Accessible but evocative; not overly literary"
+            },
+            "pacing_tolerance": {
+                "slow_burn_tolerance": "High—will wait 400+ pages for payoff if tension is maintained",
+                "action_preference": "Moderate—enjoys action but prioritizes emotional beats",
+                "subplot_complexity": "High—loves intricate plots with multiple threads"
+            },
+            "author_affinities": {
+                "auto_safe_authors": [
+                    "Sarah J. Maas",
+                    "Jennifer L. Armentrout",
+                    "Kerri Maniscalco",
+                    "Shelby Mahurin",
+                    "Stephanie Garber",
+                    "Brandon Sanderson"
+                ],
+                "loved_authors": [
+                    "Raven Kennedy",
+                    "Elise Kova",
+                    "Scarlett St. Clair"
+                ]
+            },
+            "recommendation_constraints": {
+                "spice_level": "Moderate to high spice preferred but not required; fade-to-black acceptable if emotional intimacy is strong",
+                "trigger_warnings": "Avoid graphic SA on page (references okay if handled sensitively)",
+                "series_vs_standalone": "Prefers series but will read standalones",
+                "publication_recency": "No preference—will read backlist"
+            },
+            "target_emotional_experience": [
+                "Yearning and tension",
+                "Catharsis through character growth",
+                "Escapism with stakes",
+                "Emotional devastation followed by hope"
+            ],
+            "disliked_series": [
+                "The Empyrean Saga (Fourth Wing, Iron Flame, etc.)"
+            ],
+            "reading_history": [
+                {"title": "A Court of Thorns and Roses", "author": "Sarah J. Maas", "rating": 5},
+                {"title": "A Court of Mist and Fury", "author": "Sarah J. Maas", "rating": 5},
+                {"title": "A Court of Wings and Ruin", "author": "Sarah J. Maas", "rating": 5},
+                {"title": "A Court of Frost and Starlight", "author": "Sarah J. Maas", "rating": 4},
+                {"title": "A Court of Silver Flames", "author": "Sarah J. Maas", "rating": 5},
+                {"title": "House of Earth and Blood", "author": "Sarah J. Maas", "rating": 5},
+                {"title": "House of Sky and Breath", "author": "Sarah J. Maas", "rating": 5},
+                {"title": "House of Flame and Shadow", "author": "Sarah J. Maas", "rating": 5},
+                {"title": "Throne of Glass", "author": "Sarah J. Maas", "rating": 4},
+                {"title": "Crown of Midnight", "author": "Sarah J. Maas", "rating": 5},
+                {"title": "Heir of Fire", "author": "Sarah J. Maas", "rating": 5},
+                {"title": "Queen of Shadows", "author": "Sarah J. Maas", "rating": 5},
+                {"title": "Empire of Storms", "author": "Sarah J. Maas", "rating": 5},
+                {"title": "Tower of Dawn", "author": "Sarah J. Maas", "rating": 4},
+                {"title": "Kingdom of Ash", "author": "Sarah J. Maas", "rating": 5},
+                {"title": "From Blood and Ash", "author": "Jennifer L. Armentrout", "rating": 5},
+                {"title": "A Kingdom of Flesh and Fire", "author": "Jennifer L. Armentrout", "rating": 5},
+                {"title": "The Crown of Gilded Bones", "author": "Jennifer L. Armentrout", "rating": 5},
+                {"title": "The War of Two Queens", "author": "Jennifer L. Armentrout", "rating": 5},
+                {"title": "A Soul of Ash and Blood", "author": "Jennifer L. Armentrout", "rating": 4},
+                {"title": "Born of Blood and Ash", "author": "Jennifer L. Armentrout", "rating": 5},
+                {"title": "Destiny of Blood and Ash", "author": "Jennifer L. Armentrout", "rating": 5},
+                {"title": "Gild", "author": "Raven Kennedy", "rating": 5},
+                {"title": "Glint", "author": "Raven Kennedy", "rating": 5},
+                {"title": "Gleam", "author": "Raven Kennedy", "rating": 5},
+                {"title": "Glow", "author": "Raven Kennedy", "rating": 5},
+                {"title": "Glimmer", "author": "Raven Kennedy", "rating": 5},
+                {"title": "Gold", "author": "Raven Kennedy", "rating": 5},
+                {"title": "A Deal with the Elf King", "author": "Elise Kova", "rating": 5},
+                {"title": "A Duet with the Siren Duke", "author": "Elise Kova", "rating": 5},
+                {"title": "A Duel with the Vampire Lord", "author": "Elise Kova", "rating": 5},
+                {"title": "A Dance with the Fae Prince", "author": "Elise Kova", "rating": 5},
+                {"title": "Kingdom of the Wicked", "author": "Kerri Maniscalco", "rating": 5},
+                {"title": "Kingdom of the Cursed", "author": "Kerri Maniscalco", "rating": 5},
+                {"title": "Kingdom of the Feared", "author": "Kerri Maniscalco", "rating": 5},
+                {"title": "Serpent & Dove", "author": "Shelby Mahurin", "rating": 5},
+                {"title": "Blood & Honey", "author": "Shelby Mahurin", "rating": 5},
+                {"title": "Gods & Monsters", "author": "Shelby Mahurin", "rating": 5},
+                {"title": "Caraval", "author": "Stephanie Garber", "rating": 4},
+                {"title": "Legendary", "author": "Stephanie Garber", "rating": 4},
+                {"title": "Finale", "author": "Stephanie Garber", "rating": 4},
+                {"title": "Once Upon a Broken Heart", "author": "Stephanie Garber", "rating": 5},
+                {"title": "The Ballad of Never After", "author": "Stephanie Garber", "rating": 5},
+                {"title": "A Curse for True Love", "author": "Stephanie Garber", "rating": 5},
+                {"title": "A Touch of Darkness", "author": "Scarlett St. Clair", "rating": 5},
+                {"title": "A Touch of Ruin", "author": "Scarlett St. Clair", "rating": 5},
+                {"title": "A Touch of Malice", "author": "Scarlett St. Clair", "rating": 5},
+                {"title": "A Game of Fate", "author": "Scarlett St. Clair", "rating": 5},
+                {"title": "A Game of Retribution", "author": "Scarlett St. Clair", "rating": 5},
+                {"title": "A Game of Gods", "author": "Scarlett St. Clair", "rating": 5},
+                {"title": "King of Battle and Blood", "author": "Scarlett St. Clair", "rating": 5},
+                {"title": "King of Flesh and Bone", "author": "Scarlett St. Clair", "rating": 5},
+                {"title": "When Stars Come Out", "author": "Scarlett St. Clair", "rating": 4},
+                {"title": "Daughter of Darkness", "author": "Scarlett St. Clair", "rating": 4},
+                {"title": "Queen of Myth and Monsters", "author": "Scarlett St. Clair", "rating": 5},
+                {"title": "A Touch of Chaos", "author": "Scarlett St. Clair", "rating": 5},
+                {"title": "Powerless", "author": "Lauren Roberts", "rating": 4},
+                {"title": "Reckless", "author": "Lauren Roberts", "rating": 4},
+                {"title": "The Shadows Between Us", "author": "Tricia Levenseller", "rating": 4},
+                {"title": "Blade of Secrets", "author": "Tricia Levenseller", "rating": 3},
+                {"title": "Master of Iron", "author": "Tricia Levenseller", "rating": 3},
+                {"title": "The Shadows Between Us", "author": "Tricia Levenseller", "rating": 4},
+                {"title": "Divine Rivals", "author": "Rebecca Ross", "rating": 5},
+                {"title": "Ruthless Vows", "author": "Rebecca Ross", "rating": 5},
+                {"title": "A River Enchanted", "author": "Rebecca Ross", "rating": 4},
+                {"title": "A Fire Endless", "author": "Rebecca Ross", "rating": 4},
+                {"title": "The Hurricane Wars", "author": "Thea Guanzon", "rating": 4},
+                {"title": "Heartless Hunter", "author": "Kristen Ciccarelli", "rating": 4},
+                {"title": "Belladonna", "author": "Adalyn Grace", "rating": 4},
+                {"title": "Foxglove", "author": "Adalyn Grace", "rating": 4},
+                {"title": "Wisteria", "author": "Adalyn Grace", "rating": 4},
+                {"title": "The Ashes and the Star-Cursed King", "author": "Carissa Broadbent", "rating": 5},
+                {"title": "The Serpent and the Wings of Night", "author": "Carissa Broadbent", "rating": 5},
+                {"title": "Six Scorched Roses", "author": "Carissa Broadbent", "rating": 4},
+                {"title": "Mother of Death and Dawn", "author": "Carissa Broadbent", "rating": 5},
+                {"title": "Daughter of No Worlds", "author": "Carissa Broadbent", "rating": 4},
+                {"title": "The Songbird and the Heart of Stone", "author": "Carissa Broadbent", "rating": 5}
+            ],
+            "manual_recommendations": []
+        };
+
+        let apiConfig = {
+            apiKey: '',
+            endpoint: 'https://routellm.abacus.ai/v1/chat/completions'
+        };
+
+        // Load from localStorage if available
+        function loadProfile() {
+            const saved = localStorage.getItem('wifeBookProfile');
+            if (saved) {
+                profile = JSON.parse(saved);
+            }
+
+            const savedAPI = localStorage.getItem('chatllmAPIConfig');
+            if (savedAPI) {
+                apiConfig = JSON.parse(savedAPI);
+                updateAPIStatus();
+            }
+
+            renderAll();
+        }
+
+        // Save to localStorage
+        function saveProfile() {
+            localStorage.setItem('wifeBookProfile', JSON.stringify(profile));
+            showSaveIndicator();
+        }
+
+        function showSaveIndicator() {
+            const indicator = document.getElementById('saveIndicator');
+            indicator.style.display = 'block';
+            setTimeout(() => {
+                indicator.style.display = 'none';
+            }, 2000);
+        }
+
+        // API Configuration
+        function saveAPIConfig() {
+            const apiKey = document.getElementById('apiKeyInput').value.trim();
+            const endpoint = document.getElementById('apiEndpointInput').value.trim();
+
+            if (!apiKey) {
+                alert('Please enter an API key');
+                return;
+            }
+
+            apiConfig.apiKey = apiKey;
+            apiConfig.endpoint = endpoint || 'https://routellm.abacus.ai/v1/chat/completions';
+
+            localStorage.setItem('chatllmAPIConfig', JSON.stringify(apiConfig));
+            updateAPIStatus();
+
+            const modal = bootstrap.Modal.getInstance(document.getElementById('apiConfigModal'));
+            modal.hide();
+
+            alert('API configuration saved successfully!');
+        }
+
+        function updateAPIStatus() {
+            const statusElement = document.getElementById('apiStatus');
+            if (apiConfig.apiKey) {
+                statusElement.innerHTML = '<i class="fas fa-circle text-success"></i> Configured';
+            } else {
+                statusElement.innerHTML = '<i class="fas fa-circle text-warning"></i> Not configured';
+            }
+        }
+
+        // Render all sections
+        function renderAll() {
+            renderProfile();
+            renderBooks();
+            renderRecommendations();
+            renderUpdateSections();
+            updateStats();
+        }
+
+        // Update Statistics
+        function updateStats() {
+            const totalBooks = profile.reading_history.length;
+            const avgRating = (profile.reading_history.reduce((sum, book) => sum + book.rating, 0) / totalBooks).toFixed(1);
+            const totalRecs = profile.manual_recommendations ? profile.manual_recommendations.length : 0;
+
+            document.getElementById('totalBooks').textContent = totalBooks;
+            document.getElementById('avgRating').textContent = avgRating + '★';
+            document.getElementById('totalRecs').textContent = totalRecs;
+        }
+
+        // Profile Overview
+        function renderProfile() {
+            const display = document.getElementById('profileDisplay');
+            let html = '<div class="row">';
+
+            html += '<div class="col-md-6"><div class="book-card">';
+            html += '<h5><i class="fas fa-heart text-danger"></i> Liked Tropes</h5>';
+            profile.liked_tropes.forEach(trope => {
+                html += `<span class="badge badge-custom">${trope}</span>`;
+            });
+            html += '</div></div>';
+
+            html += '<div class="col-md-6"><div class="book-card">';
+            html += '<h5><i class="fas fa-times-circle text-danger"></i> Disliked Tropes</h5>';
+            profile.disliked_tropes.forEach(trope => {
+                html += `<span class="badge bg-danger">${trope}</span>`;
+            });
+            html += '</div></div>';
+
+            html += '<div class="col-md-6"><div class="book-card">';
+            html += '<h5><i class="fas fa-user-check"></i> Auto-Safe Authors</h5>';
+            profile.author_affinities.auto_safe_authors.forEach(author => {
+                html += `<span class="badge badge-custom">${author}</span>`;
+            });
+            html += '</div></div>';
+
+            html += '<div class="col-md-6"><div class="book-card">';
+            html += '<h5><i class="fas fa-star"></i> Loved Authors</h5>';
+            profile.author_affinities.loved_authors.forEach(author => {
+                html += `<span class="badge badge-custom">${author}</span>`;
+            });
+            html += '</div></div>';
+
+            if (profile.disliked_series && profile.disliked_series.length > 0) {
+                html += '<div class="col-md-12"><div class="book-card">';
+                html += '<h5><i class="fas fa-ban text-danger"></i> Disliked Series</h5>';
+                profile.disliked_series.forEach(series => {
+                    html += `<span class="badge bg-danger">${series}</span>`;
+                });
+                html += '</div></div>';
+            }
+
+            html += '</div>';
+            display.innerHTML = html;
+        }
+
+        // Books Display
+        function renderBooks() {
+            const display = document.getElementById('booksDisplay');
+            let html = '';
+
+            profile.reading_history.forEach(book => {
+                const stars = '⭐'.repeat(book.rating);
+                html += `
+                    <div class="book-card">
+                    <h5>${book.title}</h5>
+                    <p class="mb-1"><strong>Author:</strong> ${book.author}</p>
+                    <p class="rating mb-0">${stars} (${book.rating}/5)</p>
+                    </div>
+                `;
+            });
+
+            display.innerHTML = html;
+        }
+
+        // Search books
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('bookSearch');
+            if (searchInput) {
+                searchInput.addEventListener('input', function(e) {
+                    const query = e.target.value.toLowerCase();
+                    const books = document.querySelectorAll('#booksDisplay .book-card');
+
+                    books.forEach(book => {
+                    const text = book.textContent.toLowerCase();
+                    book.style.display = text.includes(query) ? 'block' : 'none';
+                    });
+                });
+            }
+        });
+
+        // Recommendations Display
+        function renderRecommendations() {
+            const display = document.getElementById('recommendationsDisplay');
+            let html = '';
+
+            if (!profile.manual_recommendations) {
+                profile.manual_recommendations = [];
+            }
+
+            if (profile.manual_recommendations.length === 0) {
+                html = '<div class="alert alert-info"><i class="fas fa-info-circle"></i> No recommendations yet. Click "Get New AI Recommendations" or add manually.</div>';
+            } else {
+                profile.manual_recommendations.forEach((rec, index) => {
+                    html += `
+                    <div class="recommendation-card">
+                    <h4>${rec.title}</h4>
+                    <p><strong>Author:</strong> ${rec.author}</p>
+                    ${rec.genre ? `<p><strong>Genre:</strong> ${rec.genre}</p>` : ''}
+                    ${rec.tropes ? `<p><strong>Tropes:</strong> ${rec.tropes}</p>` : ''}
+                    ${rec.why ? `<p><strong>Why It Fits:</strong> ${rec.why}</p>` : ''}
+                    <div class="link-buttons">
+                    ${rec.goodreads ? `<a href="${rec.goodreads}" target="_blank" class="btn btn-sm btn-outline-primary"><i class="fab fa-goodreads"></i> Goodreads</a>` : `<a href="https://www.goodreads.com/search?q=${encodeURIComponent(rec.title + ' ' + rec.author)}" target="_blank" class="btn btn-sm btn-outline-primary"><i class="fab fa-goodreads"></i> Search Goodreads</a>`}
+                    ${rec.amazon ? `<a href="${rec.amazon}" target="_blank" class="btn btn-sm btn-outline-warning"><i class="fab fa-amazon"></i> Amazon</a>` : `<a href="https://www.amazon.com/s?k=${encodeURIComponent(rec.title + ' ' + rec.author)}" target="_blank" class="btn btn-sm btn-outline-warning"><i class="fab fa-amazon"></i> Search Amazon</a>`}
+                    ${rec.buscalibre ? `<a href="${rec.buscalibre}" target="_blank" class="btn btn-sm btn-outline-info"><i class="fas fa-book"></i> Buscalibre</a>` : `<a href="https://www.buscalibre.com/buscar?q=${encodeURIComponent(rec.title + ' ' + rec.author)}" target="_blank" class="btn btn-sm btn-outline-info"><i class="fas fa-book"></i> Search Buscalibre</a>`}
+                    <button class="btn btn-sm btn-outline-danger" onclick="removeRecommendation(${index})"><i class="fas fa-trash"></i> Remove</button>
+                    </div>
+                    </div>
+                    `;
+                });
+            }
+
+            display.innerHTML = html;
+        }
+
+        // Add Manual Recommendation
+        function addManualRecommendation() {
+            const title = document.getElementById('recTitle').value.trim();
+            const author = document.getElementById('recAuthor').value.trim();
+            const genre = document.getElementById('recGenre').value.trim();
+            const tropes = document.getElementById('recTropes').value.trim();
+            const why = document.getElementById('recWhy').value.trim();
+            const goodreads = document.getElementById('recGoodreads').value.trim();
+            const amazon = document.getElementById('recAmazon').value.trim();
+            const buscalibre = document.getElementById('recBuscalibre').value.trim();
+
+            if (!title || !author) {
+                alert('Please fill in at least the title and author.');
+                return;
+            }
+
+            const recommendation = {
+                title: title,
+                author: author,
+                genre: genre,
+                tropes: tropes,
+                why: why,
+                goodreads: goodreads,
+                amazon: amazon,
+                buscalibre: buscalibre
+            };
+
+            if (!profile.manual_recommendations) {
+                profile.manual_recommendations = [];
+            }
+
+            profile.manual_recommendations.push(recommendation);
+            saveProfile();
+            renderRecommendations();
+            updateStats();
+
+            // Clear form
+            document.getElementById('recTitle').value = '';
+            document.getElementById('recAuthor').value = '';
+            document.getElementById('recGenre').value = '';
+            document.getElementById('recTropes').value = '';
+            document.getElementById('recWhy').value = '';
+            document.getElementById('recGoodreads').value = '';
+            document.getElementById('recAmazon').value = '';
+            document.getElementById('recBuscalibre').value = '';
+
+            // Close modal
+            const modal = bootstrap.Modal.getInstance(document.getElementById('addRecommendationModal'));
+            modal.hide();
+        }
+
+        // Remove Recommendation
+        function removeRecommendation(index) {
+            if (confirm('Are you sure you want to remove this recommendation?')) {
+                profile.manual_recommendations.splice(index, 1);
+                saveProfile();
+                renderRecommendations();
+                updateStats();
+            }
+        }
+
+// Normalize text for comparison (lowercase, no punctuation, no extra spaces)
+function normalizeText(text) {
+    return text.toLowerCase()
+        .replace(/[^\w\s]/g, '') // remove punctuation
+        .replace(/\s+/g, ' ')     // collapse whitespace
+        .trim();
+}
+
+// AI Recommendations Function with AJAX
+async function getAIRecommendations(event) {
+    if (!apiConfig.apiKey) {
+        alert('⚠️ Please configure your API key first!\n\nClick "Configure API Key" in the banner above.');
+        return;
+    }
+
+    const button = event.target;
+    button.disabled = true;
+
+    // Show loading overlay
+    document.getElementById('loadingOverlay').style.display = 'flex';
+
+    // Build normalized sets of already-read books
+    const readTitlesSet = new Set();
+    const readTitleAuthorSet = new Set();
+
+    profile.reading_history.forEach(book => {
+        readTitlesSet.add(normalizeText(book.title));
+        readTitleAuthorSet.add(normalizeText(book.title + ' ' + book.author));
+    });
+
+    // Build the prompt with clearer formatting
+    const readBooksList = profile.reading_history.map(b => `- "${b.title}" by ${b.author}`).join('\n');
+    const existingRecs = profile.manual_recommendations.map(r => `- "${r.title}" by ${r.author}`).join('\n');
+
+    const prompt = `Based on this reader profile, please recommend 7 new books that haven't been read or recommended yet. The recommendation must contain 3 romance books, 3 fantasy books and 1 romantic fantasy. Do not recommend books that have been already read. Do not recommend books that have disliked tropes. Do not recommend books from any of the disliked series.
+
+LIKED TROPES: ${profile.liked_tropes.join(', ')}
+DISLIKED TROPES: ${profile.disliked_tropes.join(', ')}
+AUTO-SAFE AUTHORS: ${profile.author_affinities.auto_safe_authors.join(', ')}
+LOVED AUTHORS: ${profile.author_affinities.loved_authors.join(', ')}
+DISLIKED SERIES: ${profile.disliked_series.join(', ')}
+
+ALREADY READ BOOKS (DO NOT RECOMMEND ANY OF THESE):
+${readBooksList}
+
+ALREADY RECOMMENDED (DO NOT RECOMMEND ANY OF THESE):
+${existingRecs}
+
+Please provide exactly 7 new book recommendations in this exact JSON format:
+[
+  {
+    "title": "Book Title",
+    "author": "Author Name",
+    "genre": "Genre",
+    "tropes": "trope1, trope2, trope3",
+    "why": "Brief explanation why it fits"
+  }
+]
+
+Return ONLY the JSON array, no other text.`;
+
+    try {
+        const response = await fetch(apiConfig.endpoint, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${apiConfig.apiKey}`
+            },
+            body: JSON.stringify({
+                model: 'gpt-4o-mini',
+                messages: [
+                    {
+                        role: 'system',
+                        content: 'You are a book recommendation expert. Always respond with valid JSON only.'
+                    },
+                    {
+                        role: 'user',
+                        content: prompt
+                    }
+                ],
+                temperature: 0.7,
+                max_tokens: 2000
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error(`API Error: ${response.status} ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        const aiResponse = data.choices[0].message.content;
+
+        // Parse the JSON response
+        let recommendations;
+        try {
+            // Try to extract JSON from the response
+            const jsonMatch = aiResponse.match(/\[[\s\S]*\]/);
+            if (jsonMatch) {
+                recommendations = JSON.parse(jsonMatch[0]);
+            } else {
+                recommendations = JSON.parse(aiResponse);
+            }
+        } catch (parseError) {
+            throw new Error('Failed to parse AI response. Please try again.');
+        }
+
+        // Filter out already-read books
+        const filteredRecommendations = recommendations.filter(rec => {
+            const normTitle = normalizeText(rec.title);
+            const normTitleAuthor = normalizeText(rec.title + ' ' + rec.author);
+            
+            // Reject if title matches
+            if (readTitlesSet.has(normTitle)) {
+                console.log(`Filtered out (title match): ${rec.title}`);
+                return false;
+            }
+            
+            // Reject if title+author matches
+            if (readTitleAuthorSet.has(normTitleAuthor)) {
+                console.log(`Filtered out (title+author match): ${rec.title} by ${rec.author}`);
+                return false;
+            }
+            
+            return true;
+        });
+
+        // Add filtered recommendations to profile
+        if (!profile.manual_recommendations) {
+            profile.manual_recommendations = [];
+        }
+
+        filteredRecommendations.forEach(rec => {
+            profile.manual_recommendations.push({
+                title: rec.title,
+                author: rec.author,
+                genre: rec.genre || '',
+                tropes: rec.tropes || '',
+                why: rec.why || '',
+                goodreads: '',
+                amazon: '',
+                buscalibre: ''
+            });
+        });
+
+        saveProfile();
+        renderRecommendations();
+        updateStats();
+
+        // Switch to recommendations tab
+        const recTab = new bootstrap.Tab(document.getElementById('recommendations-tab'));
+        recTab.show();
+
+        // Show result message
+        const filtered = recommendations.length - filteredRecommendations.length;
+        if (filtered > 0) {
+            alert(`✅ Added ${filteredRecommendations.length} new recommendations!\n\n⚠️ ${filtered} book(s) were filtered out because they were already read.`);
+        } else {
+            alert(`✅ Successfully added ${filteredRecommendations.length} new recommendations!`);
+        }
+
+    } catch (error) {
+        console.error('Error:', error);
+        alert(`❌ Error getting recommendations:\n\n${error.message}\n\nPlease check your API configuration and try again.`);
+    } finally {
+        // Hide loading overlay
+        document.getElementById('loadingOverlay').style.display = 'none';
+        button.disabled = false;
+    }
+}
+        // Update Sections Rendering
+        function renderUpdateSections() {
+            // Liked Tropes
+            let likedHtml = '';
+            profile.liked_tropes.forEach((trope, index) => {
+                likedHtml += `
+                    <span class="tag-item">
+                    ${trope}
+                    <button onclick="removeLikedTrope(${index})"><i class="fas fa-times"></i></button>
+                    </span>
+                `;
+            });
+            document.getElementById('likedTropesList').innerHTML = likedHtml;
+
+            // Disliked Tropes
+            let dislikedHtml = '';
+            profile.disliked_tropes.forEach((trope, index) => {
+                dislikedHtml += `
+                    <span class="tag-item">
+                    ${trope}
+                    <button onclick="removeDislikedTrope(${index})"><i class="fas fa-times"></i></button>
+                    </span>
+                `;
+            });
+            document.getElementById('dislikedTropesList').innerHTML = dislikedHtml;
+
+            // Auto-Safe Authors
+            let autoSafeHtml = '';
+            profile.author_affinities.auto_safe_authors.forEach((author, index) => {
+                autoSafeHtml += `
+                    <span class="tag-item">
+                    ${author}
+                    <button onclick="removeAutoSafeAuthor(${index})"><i class="fas fa-times"></i></button>
+                    </span>
+                `;
+            });
+            document.getElementById('autoSafeAuthorsList').innerHTML = autoSafeHtml;
+
+            // Loved Authors
+            let lovedHtml = '';
+            profile.author_affinities.loved_authors.forEach((author, index) => {
+                lovedHtml += `
+                    <span class="tag-item">
+                    ${author}
+                    <button onclick="removeLovedAuthor(${index})"><i class="fas fa-times"></i></button>
+                    </span>
+                `;
+            });
+            document.getElementById('lovedAuthorsList').innerHTML = lovedHtml;
+
+            // Disliked Series
+            let seriesHtml = '';
+            if (profile.disliked_series) {
+                profile.disliked_series.forEach((series, index) => {
+                    seriesHtml += `
+                    <span class="tag-item">
+                    ${series}
+                    <button onclick="removeDislikedSeries(${index})"><i class="fas fa-times"></i></button>
+                    </span>
+                    `;
+                });
+            }
+            document.getElementById('dislikedSeriesList').innerHTML = seriesHtml;
+        }
+
+        // Add/Remove Functions
+        function addLikedTrope() {
+            const input = document.getElementById('newLikedTrope');
+            const value = input.value.trim();
+            if (value && !profile.liked_tropes.includes(value)) {
+                profile.liked_tropes.push(value);
+                saveProfile();
+                renderUpdateSections();
+                input.value = '';
+            }
+        }
+
+        function removeLikedTrope(index) {
+            profile.liked_tropes.splice(index, 1);
+            saveProfile();
+            renderUpdateSections();
+            renderProfile();
+        }
+
+        function addDislikedTrope() {
+            const input = document.getElementById('newDislikedTrope');
+            const value = input.value.trim();
+            if (value && !profile.disliked_tropes.includes(value)) {
+                profile.disliked_tropes.push(value);
+                saveProfile();
+                renderUpdateSections();
+                input.value = '';
+            }
+        }
+
+        function removeDislikedTrope(index) {
+            profile.disliked_tropes.splice(index, 1);
+            saveProfile();
+            renderUpdateSections();
+            renderProfile();
+        }
+
+        function addAutoSafeAuthor() {
+            const input = document.getElementById('newAutoSafeAuthor');
+            const value = input.value.trim();
+            if (value && !profile.author_affinities.auto_safe_authors.includes(value)) {
+                profile.author_affinities.auto_safe_authors.push(value);
+                saveProfile();
+                renderUpdateSections();
+                input.value = '';
+            }
+        }
+
+        function removeAutoSafeAuthor(index) {
+            profile.author_affinities.auto_safe_authors.splice(index, 1);
+            saveProfile();
+            renderUpdateSections();
+            renderProfile();
+        }
+
+        function addLovedAuthor() {
+            const input = document.getElementById('newLovedAuthor');
+            const value = input.value.trim();
+            if (value && !profile.author_affinities.loved_authors.includes(value)) {
+                profile.author_affinities.loved_authors.push(value);
+                saveProfile();
+                renderUpdateSections();
+                input.value = '';
+            }
+        }
+
+        function removeLovedAuthor(index) {
+            profile.author_affinities.loved_authors.splice(index, 1);
+            saveProfile();
+            renderUpdateSections();
+            renderProfile();
+        }
+
+        function addDislikedSeries() {
+            const input = document.getElementById('newDislikedSeries');
+            const value = input.value.trim();
+            if (value) {
+                if (!profile.disliked_series) {
+                    profile.disliked_series = [];
+                }
+                if (!profile.disliked_series.includes(value)) {
+                    profile.disliked_series.push(value);
+                    saveProfile();
+                    renderUpdateSections();
+                    input.value = '';
+                }
+            }
+        }
+
+        function removeDislikedSeries(index) {
+            profile.disliked_series.splice(index, 1);
+            saveProfile();
+            renderUpdateSections();
+            renderProfile();
+        }
+
+        function addNewBook() {
+            const title = document.getElementById('newBookTitle').value.trim();
+            const author = document.getElementById('newBookAuthor').value.trim();
+            const rating = parseInt(document.getElementById('newBookRating').value);
+
+            if (!title || !author) {
+                alert('Please fill in both title and author.');
+                return;
+            }
+
+            profile.reading_history.push({
+                title: title,
+                author: author,
+                rating: rating
+            });
+
+            saveProfile();
+            renderBooks();
+            updateStats();
+
+            // Clear form
+            document.getElementById('newBookTitle').value = '';
+            document.getElementById('newBookAuthor').value = '';
+            document.getElementById('newBookRating').value = '5';
+
+            alert('Book added successfully!');
+        }
+
+        // Import/Export Functions
+        function importJSON() {
+            const jsonText = document.getElementById('jsonImport').value.trim();
+            
+            if (!jsonText) {
+                alert('Please paste JSON data to import.');
+                return;
+            }
+
+            try {
+                const importedProfile = JSON.parse(jsonText);
+                
+                // Validate that it has the required structure
+                if (!importedProfile.liked_tropes || !importedProfile.reading_history) {
+                    throw new Error('Invalid profile structure');
+                }
+
+                // Update the profile
+                profile = importedProfile;
+                
+                // Save to localStorage
+                saveProfile();
+                
+                // Re-render everything
+                renderAll();
+                
+                alert('✅ Profile imported successfully!');
+                
+                // Clear the import textarea
+                document.getElementById('jsonImport').value = '';
+                
+            } catch (error) {
+                console.error('Import error:', error);
+                alert('❌ Error importing profile:\n\n' + error.message + '\n\nPlease make sure you pasted valid JSON.');
+            }
+        }
+
+        function exportJSON() {
+            const jsonText = JSON.stringify(profile, null, 2);
+            document.getElementById('jsonExport').value = jsonText;
+        }
+
+        function copyJSON() {
+            const jsonText = document.getElementById('jsonExport').value;
+            
+            if (!jsonText) {
+                alert('Please click "Generate Export" first.');
+                return;
+            }
+
+            navigator.clipboard.writeText(jsonText).then(() => {
+                alert('✅ JSON copied to clipboard!');
+            }).catch(err => {
+                console.error('Copy error:', err);
+                alert('❌ Failed to copy to clipboard. Please copy manually.');
+            });
+        }
+
+        // Initialize on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            loadProfile();
+            
+            // Load API config into modal when opened
+            document.getElementById('apiConfigModal').addEventListener('show.bs.modal', function() {
+                if (apiConfig.apiKey) {
+                    document.getElementById('apiKeyInput').value = apiConfig.apiKey;
+                }
+                if (apiConfig.endpoint) {
+                    document.getElementById('apiEndpointInput').value = apiConfig.endpoint;
+                }
+            });
+            
+            // Auto-generate export on tab switch
+            document.getElementById('json-tab').addEventListener('click', function() {
+                exportJSON();
+            });
+        });
+    </script>
+    <script>
+     	if ('serviceWorker' in navigator) {  
+  	  window.addEventListener('load', () => {  
+        	navigator.serviceWorker.register('sw.js')  
+	            .then(reg => {  
+	                console.log('Service Worker registered:', reg.scope);  
+	            })  
+	            .catch(err => {  
+	                console.error('Service Worker registration failed:', err);  
+	            });  
+	    });  
+	}
+    </script>
+</body>
+</html>
