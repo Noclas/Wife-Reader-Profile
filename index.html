@@ -436,9 +436,156 @@
             margin: 0;
             opacity: 0.9;
         }
+
+        /* Login Screen Styles */
+        #loginScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1a1625 0%, #2d1b4e 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        #loginScreen.hidden {
+            display: none;
+        }
+
+        .login-container {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            text-align: center;
+        }
+
+        .login-container h1 {
+            color: #fff;
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .login-container p {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 30px;
+        }
+
+        .login-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid rgba(139, 92, 246, 0.3);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            font-size: 16px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .login-input:focus {
+            outline: none;
+            border-color: #8b5cf6;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .login-input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%);
+            border: none;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.4);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        .login-error {
+            color: #ff6b6b;
+            margin-top: 15px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .login-error.show {
+            display: block;
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Logout button in header */
+        .logout-btn {
+            background: rgba(255, 107, 107, 0.2);
+            border: 1px solid rgba(255, 107, 107, 0.3);
+            color: #ff6b6b;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 107, 107, 0.3);
+            border-color: #ff6b6b;
+        }
     </style>
 </head>
 <body>
+    <!-- Login Screen -->
+    <div id="loginScreen">
+        <div class="login-container">
+            <h1>📚 Wife's Book Manager</h1>
+            <p>Enter password to continue</p>
+            <input 
+                type="password" 
+                id="loginPassword" 
+                class="login-input" 
+                placeholder="Password"
+                autocomplete="off"
+            />
+            <button onclick="attemptLogin()" class="login-btn">
+                <i class="fas fa-unlock"></i> Login
+            </button>
+            <div id="loginError" class="login-error">
+                ❌ Incorrect password. Please try again.
+            </div>
+        </div>
+    </div>
     <div class="save-indicator" id="saveIndicator">
         <i class="fas fa-check-circle"></i> Saved!
     </div>
@@ -452,10 +599,11 @@
     </div>
 
     <div class="container">
-        <div class="text-center">
-            <h1>
-                <i class="fas fa-book-heart"></i> Wife's Book Profile Manager
-            </h1>
+        <div class="header" style="display: flex; justify-content: space-between; align-items: center;">
+            <h1>Wife Book Profile Manager</h1>
+            <button onclick="logout()" class="logout-btn">
+                 <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
             <p class="subtitle">Your personalized reading companion powered by AI</p>
         </div>
 
@@ -1502,6 +1650,90 @@ Return ONLY the JSON array, no other text.`;
             document.getElementById('json-tab').addEventListener('click', function() {
                 exportJSON();
             });
+        });
+        // ============================================
+        // SECURE LOGIN SYSTEM (SHA-256)
+        // ============================================
+
+        // 1. PEGA AQUÍ EL HASH QUE GENERASTE
+        const STORED_HASH = '4f63a89f8bbc5d428755771c3ba057072df6f0b39dffb656f488751407fb6076'; 
+
+        // Función para convertir texto a Hash SHA-256
+        async function sha256(message) {
+            const msgBuffer = new TextEncoder().encode(message);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+
+        // Verificar si ya está logueado
+        function checkAuth() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            if (isLoggedIn === 'true') {
+                document.getElementById('loginScreen').classList.add('hidden');
+            } else {
+                document.getElementById('loginScreen').classList.remove('hidden');
+            }
+        }
+
+        // Intento de Login
+        async function attemptLogin() {
+            const passwordInput = document.getElementById('loginPassword');
+            const password = passwordInput.value;
+            const errorDiv = document.getElementById('loginError');
+            const loginBtn = document.querySelector('.login-btn');
+
+            if (!password) return;
+
+            // Desactivar botón mientras procesa
+            loginBtn.disabled = true;
+            loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Checking...';
+
+            try {
+                const inputHash = await sha256(password);
+
+                if (inputHash === STORED_HASH) {
+                    // Éxito
+                    localStorage.setItem('isLoggedIn', 'true');
+                    document.getElementById('loginScreen').classList.add('hidden');
+                    errorDiv.classList.remove('show');
+                    passwordInput.value = '';
+                } else {
+                    // Error
+                    errorDiv.classList.add('show');
+                    passwordInput.value = '';
+                    passwordInput.focus();
+                    
+                    setTimeout(() => {
+                        errorDiv.classList.remove('show');
+                    }, 3000);
+                }
+            } catch (err) {
+                console.error("Login error:", err);
+                alert("Error processing login. Please try again.");
+            } finally {
+                loginBtn.disabled = false;
+                loginBtn.innerHTML = '<i class="fas fa-unlock"></i> Login';
+            }
+        }
+
+        // Logout
+        function logout() {
+            if (confirm('¿Cerrar sesión en este dispositivo?')) {
+                localStorage.removeItem('isLoggedIn');
+                location.reload(); // Recargar para limpiar estado
+            }
+        }
+
+        // Event Listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            const passwordInput = document.getElementById('loginPassword');
+            if (passwordInput) {
+                passwordInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') attemptLogin();
+                });
+            }
+            checkAuth();
         });
     </script>
     <script>
